@@ -17,8 +17,6 @@
         <attr name="mti_ringLblDateSelectedColor" format="color"/>
         <attr name="mti_bgLblTodayColor" format="color"/>
 
-        <attr name="mti_lblLabelColor" format="color"/>
-
         <attr name="mti_followScroll" format="boolean"/>
         <attr name="mti_yearDigitCount" format="integer"/>
         <attr name="mti_yearOnNewLine" format="boolean"/>

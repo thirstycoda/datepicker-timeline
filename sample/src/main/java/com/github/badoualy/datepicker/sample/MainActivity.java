@@ -1,6 +1,8 @@
 package com.github.badoualy.datepicker.sample;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         DatePickerTimeline timeline = findViewById(R.id.timeline);
-        timeline.setDateLabelAdapter(new MonthView.DateLabelAdapter() {
+        timeline.setDateIconAdapter(new MonthView.DateIconAdapter() {
             @Override
-            public CharSequence getLabel(Calendar calendar, int index) {
-                return Integer.toString(calendar.get(Calendar.MONTH) + 1) + "/" + (calendar.get(Calendar.YEAR) % 2000);
+            public Drawable getIcon(Calendar calendar, int index) {
+                return index % 4 == 0 ? ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_star_black_24dp) : null;
             }
         });
 

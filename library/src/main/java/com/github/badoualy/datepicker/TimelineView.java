@@ -1,6 +1,7 @@
 package com.github.badoualy.datepicker;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DateFormatSymbols;
@@ -28,7 +30,7 @@ public class TimelineView extends RecyclerView {
     private TimelineAdapter adapter;
     private LinearLayoutManager layoutManager;
     private DatePickerTimeline.OnDateSelectedListener onDateSelectedListener;
-    private MonthView.DateLabelAdapter dateLabelAdapter;
+    private MonthView.DateIconAdapter dateIconAdapter;
 
     private int startYear = 1970, startMonth = 0, startDay = 1;
     private int selectedYear, selectedMonth, selectedDay;
@@ -39,8 +41,6 @@ public class TimelineView extends RecyclerView {
     private int lblDayColor;
     // Day number label
     private int lblDateColor, lblDateSelectedColor;
-    // Label
-    private int lblLabelColor;
 
     public TimelineView(Context context) {
         super(context);
@@ -181,8 +181,8 @@ public class TimelineView extends RecyclerView {
         return onDateSelectedListener;
     }
 
-    public void setDateLabelAdapter(@Nullable MonthView.DateLabelAdapter dateLabelAdapter) {
-        this.dateLabelAdapter = dateLabelAdapter;
+    public void setDateIconAdapter(@Nullable MonthView.DateIconAdapter dateIconAdapter) {
+        this.dateIconAdapter = dateIconAdapter;
     }
 
     public void setDayLabelColor(int lblDayColor) {
@@ -195,10 +195,6 @@ public class TimelineView extends RecyclerView {
 
     public void setDateLabelSelectedColor(int lblDateSelectedColor) {
         this.lblDateSelectedColor = lblDateSelectedColor;
-    }
-
-    public void setLabelColor(int lblLabelColor) {
-        this.lblLabelColor = lblLabelColor;
     }
 
     public int getLblDateColor() {
@@ -223,14 +219,6 @@ public class TimelineView extends RecyclerView {
 
     public void setLblDayColor(int lblDayColor) {
         this.lblDayColor = lblDayColor;
-    }
-
-    public int getLblLabelColor() {
-        return lblLabelColor;
-    }
-
-    public void setLblLabelColor(int lblLabelColor) {
-        this.lblLabelColor = lblLabelColor;
     }
 
     public int getStartYear() {
@@ -310,7 +298,7 @@ public class TimelineView extends RecyclerView {
             boolean isToday = DateUtils.isToday(calendar.getTimeInMillis());
 
             holder.bind(position, year, month, day, dayOfWeek,
-                        dateLabelAdapter != null ? dateLabelAdapter.getLabel(calendar, position) : "",
+                        dateIconAdapter != null ? dateIconAdapter.getIcon(calendar, position) : null,
                         position == selectedPosition, isToday);
         }
 
@@ -324,7 +312,7 @@ public class TimelineView extends RecyclerView {
 
         private final TextView lblDay;
         private final TextView lblDate;
-        private final TextView lblValue;
+        private final ImageView imageView;
 
         private int position;
         private int year, month, day;
@@ -332,13 +320,12 @@ public class TimelineView extends RecyclerView {
         TimelineViewHolder(View root) {
             super(root);
 
-            lblDay = (TextView) root.findViewById(R.id.mti_timeline_lbl_day);
-            lblDate = (TextView) root.findViewById(R.id.mti_timeline_lbl_date);
-            lblValue = (TextView) root.findViewById(R.id.mti_timeline_lbl_value);
+            lblDay = root.findViewById(R.id.mti_timeline_lbl_day);
+            lblDate = root.findViewById(R.id.mti_timeline_lbl_date);
+            imageView = root.findViewById(R.id.mti_timeline_icon);
 
             lblDay.setTextColor(lblDayColor);
             lblDate.setTextColor(lblDateColor);
-            lblValue.setTextColor(lblLabelColor);
 
             root.setOnClickListener(new OnClickListener() {
                 @Override
@@ -348,7 +335,7 @@ public class TimelineView extends RecyclerView {
             });
         }
 
-        void bind(int position, int year, int month, int day, int dayOfWeek, CharSequence label, boolean selected, boolean isToday) {
+        void bind(int position, int year, int month, int day, int dayOfWeek, Drawable icon, boolean selected, boolean isToday) {
             this.position = position;
             this.year = year;
             this.month = month;
@@ -356,7 +343,13 @@ public class TimelineView extends RecyclerView {
 
             lblDay.setText(WEEK_DAYS[dayOfWeek].toUpperCase(Locale.US));
             lblDate.setText(String.valueOf(day));
-            lblValue.setText(label);
+
+            if (icon == null) {
+                imageView.setVisibility(View.GONE);
+            } else {
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageDrawable(icon);
+            }
 
             lblDate.setBackgroundResource(selected ? R.drawable.mti_bg_lbl_date_selected
                                                    : (isToday ? R.drawable.mti_bg_lbl_date_today : 0));

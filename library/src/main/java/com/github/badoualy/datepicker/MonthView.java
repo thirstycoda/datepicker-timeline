@@ -1,6 +1,7 @@
 package com.github.badoualy.datepicker;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -310,8 +311,8 @@ public class MonthView extends RecyclerView {
         MonthViewHolder(View root) {
             super(root);
 
-            indicator = (DotView) root.findViewById(R.id.mti_view_indicator);
-            lbl = (TextView) root.findViewById(R.id.mti_month_lbl);
+            indicator = root.findViewById(R.id.mti_view_indicator);
+            lbl = root.findViewById(R.id.mti_month_lbl);
 
             root.setOnClickListener(new OnClickListener() {
                 @Override
@@ -344,8 +345,7 @@ public class MonthView extends RecyclerView {
         void onMonthSelected(int year, int month, int index);
     }
 
-    public interface DateLabelAdapter {
-
-        CharSequence getLabel(Calendar calendar, int index);
+    public interface DateIconAdapter {
+        Drawable getIcon(Calendar calendar, int index);
     }
 }

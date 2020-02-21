@@ -64,7 +64,6 @@ public final class DatePickerTimeline extends LinearLayout implements MonthView.
         int bgLblDateSelectedColor = ContextCompat.getColor(getContext(), R.color.mti_bg_lbl_date_selected_color);
         int ringLblDateSelectedColor = ContextCompat.getColor(getContext(), R.color.mti_ring_lbl_date_color);
         int bgLblTodayColor = ContextCompat.getColor(getContext(), R.color.mti_bg_lbl_today);
-        int lblLabelColor = ContextCompat.getColor(getContext(), R.color.mti_lbl_label);
 
         // Load xml attrs
         final TypedArray a = getContext()
@@ -84,7 +83,6 @@ public final class DatePickerTimeline extends LinearLayout implements MonthView.
         ringLblDateSelectedColor = a
                 .getColor(R.styleable.DatePickerTimeline_mti_ringLblDateSelectedColor, ringLblDateSelectedColor);
         bgLblTodayColor = a.getColor(R.styleable.DatePickerTimeline_mti_bgLblTodayColor, bgLblTodayColor);
-        lblLabelColor = a.getColor(R.styleable.DatePickerTimeline_mti_lblLabelColor, lblLabelColor);
         boolean followScroll = a.getBoolean(R.styleable.DatePickerTimeline_mti_followScroll, true);
         int yearDigitCount = a.getInt(R.styleable.DatePickerTimeline_mti_yearDigitCount, 2);
         boolean yearOnNewLine = a.getBoolean(R.styleable.DatePickerTimeline_mti_yearOnNewLine, true);
@@ -101,8 +99,8 @@ public final class DatePickerTimeline extends LinearLayout implements MonthView.
         setOrientation(VERTICAL);
         final View view = inflate(getContext(), R.layout.mti_datepicker_timeline, this);
 
-        monthView = (MonthView) view.findViewById(R.id.mti_month_view);
-        timelineView = (TimelineView) view.findViewById(R.id.mti_timeline);
+        monthView = view.findViewById(R.id.mti_month_view);
+        timelineView = view.findViewById(R.id.mti_timeline);
 
         monthView.setBackgroundColor(primaryColor);
         monthView.setFirstDate(startYear, startMonth);
@@ -118,7 +116,6 @@ public final class DatePickerTimeline extends LinearLayout implements MonthView.
         timelineView.setDayLabelColor(lblDayColor);
         timelineView.setDateLabelColor(lblDateColor);
         timelineView.setDateLabelSelectedColor(lblDateSelectedColor);
-        timelineView.setLabelColor(lblLabelColor);
         timelineView.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(int year, int month, int day, int index) {
@@ -159,8 +156,8 @@ public final class DatePickerTimeline extends LinearLayout implements MonthView.
         return onDateSelectedListener;
     }
 
-    public void setDateLabelAdapter(@Nullable MonthView.DateLabelAdapter dateLabelAdapter) {
-        timelineView.setDateLabelAdapter(dateLabelAdapter);
+    public void setDateIconAdapter(@Nullable MonthView.DateIconAdapter dateIconAdapter) {
+        timelineView.setDateIconAdapter(dateIconAdapter);
     }
 
     public MonthView getMonthView() {
